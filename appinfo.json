@@ -1,0 +1,21 @@
+{
+  "uuid": "8f45e8c6-bbc9-4abd-a867-6f26b91e3df3",
+  "shortName": "POSA",
+  "longName": "POSA Sleep Trainer",
+  "watchapp": {
+    "watchface": false
+  },
+  "versionCode": 1,
+  "versionLabel": "1.0",
+  "companyName": "POSA",
+  "appKeys": {},
+  "resources": {
+    "media": []
+  },
+  "targetPlatforms": [
+    "aplite",
+    "basalt",
+    "chalk"
+  ],
+  "sdkVersion": "3"
+}
