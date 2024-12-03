@@ -1,8 +1,7 @@
 #include "pebble.h"
 
 #define ACCEL_STEP_MS 20000 // 20 sec
-// #define GRACE_PERIOD 1200000 // 20 minutes
-#define GRACE_PERIOD 50 // 20 minutes
+#define GRACE_PERIOD 1200000 // 20 minutes
 #define FIRST_WARN 1
 #define SECOND_WARN 3
 #define THIRD_WARN 5
@@ -70,7 +69,6 @@ static void timer_callback(void *data)
   else
   {
     static char s_buffer[32];
-    // snprintf(s_buffer, sizeof(s_buffer), "1.: %d\n2.: %d\n3.: %d", first_warns, second_warns, third_warns);
     snprintf(s_buffer, sizeof(s_buffer), "\n1 - 2 - 3\n-------\n%d - %d - %d", first_warns, second_warns, third_warns);
     text_layer_set_text(s_text_layer, s_buffer);
   }
