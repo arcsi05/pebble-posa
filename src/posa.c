@@ -1,17 +1,22 @@
 #include "pebble.h"
 
 #define ACCEL_STEP_MS 20000 // 20 sec
-#define GRACE_PERIOD 1200000 // 20 minutes
+// #define GRACE_PERIOD 1200000 // 20 minutes
+#define GRACE_PERIOD 50 // 20 minutes
 #define FIRST_WARN 1
 #define SECOND_WARN 3
 #define THIRD_WARN 5
-#define DEBUG true
+#define DEBUG false
 
 static Window *s_main_window;
 static TextLayer *s_text_layer;
 
 uint ticks_on_back;
 uint callback_time;
+
+uint first_warns;
+uint second_warns;
+uint third_warns;
 
 static bool supine_position(AccelData accel)
 {
@@ -31,16 +36,19 @@ static void timer_callback(void *data)
     case FIRST_WARN ... SECOND_WARN - 1:
       vibes_double_pulse();
       callback_time = ACCEL_STEP_MS - FIRST_WARN * (ACCEL_STEP_MS / (FIRST_WARN + SECOND_WARN + THIRD_WARN));
+      first_warns += 1;
       break;
 
     case SECOND_WARN ... THIRD_WARN - 1:
       vibes_short_pulse();
       callback_time = ACCEL_STEP_MS - SECOND_WARN * (ACCEL_STEP_MS / (FIRST_WARN + SECOND_WARN + THIRD_WARN));
+      second_warns += 1;
       break;
 
     case THIRD_WARN ... 1000:
       vibes_long_pulse();
       callback_time = ACCEL_STEP_MS - THIRD_WARN * (ACCEL_STEP_MS / (FIRST_WARN + SECOND_WARN + THIRD_WARN));
+      third_warns += 1;
       break;
 
     default:
@@ -55,10 +63,18 @@ static void timer_callback(void *data)
 
   if (DEBUG)
   {
-    static char s_buffer[32];
+    static char s_buffer[64];
     snprintf(s_buffer, sizeof(s_buffer), "x:%d\ny:%d\nz:%d\nct:%d\nt:%d", accel.x, accel.y, accel.z, callback_time, ticks_on_back);
     text_layer_set_text(s_text_layer, s_buffer);
   }
+  else
+  {
+    static char s_buffer[32];
+    // snprintf(s_buffer, sizeof(s_buffer), "1.: %d\n2.: %d\n3.: %d", first_warns, second_warns, third_warns);
+    snprintf(s_buffer, sizeof(s_buffer), "\n1 - 2 - 3\n-------\n%d - %d - %d", first_warns, second_warns, third_warns);
+    text_layer_set_text(s_text_layer, s_buffer);
+  }
+
   app_timer_register(callback_time, timer_callback, NULL);
 }
 
@@ -70,12 +86,19 @@ static void init()
   ticks_on_back = 0;
   callback_time = ACCEL_STEP_MS;
 
+  first_warns = 0;
+  second_warns = 0;
+  third_warns = 0;
+
   Layer *window_layer = window_get_root_layer(s_main_window);
   GRect bounds = layer_get_bounds(window_layer);
 
   s_text_layer = text_layer_create(bounds);
-  text_layer_set_text(s_text_layer, "Get ready to sleep!");
+  static char s_buffer[48];
+  snprintf(s_buffer, sizeof(s_buffer), "Get ready to sleep!\n\nMonitoring in %d minutes.", GRACE_PERIOD / 1000 / 60);
+  text_layer_set_text(s_text_layer, s_buffer);
   text_layer_set_text_alignment(s_text_layer, GTextAlignmentCenter);
+  text_layer_set_font(s_text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
   layer_add_child(window_layer, text_layer_get_layer(s_text_layer));
 
   // accel_data_service_subscribe(0, NULL);
