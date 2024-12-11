@@ -80,7 +80,7 @@ The core logic is implemented in C, utilizing Pebble's SDK. Key components inclu
 ## TODO
 
 - [ ] Create menu to select initial grace period
-- [ ] Create menu to congifure other parameters
+- [ ] Create menu to configure other parameters
 - [ ] Add graphics
 - [ ] Publish to Rebble Store for Pebble ([documentation](https://dev-portal.rebble.io/))
 
@@ -89,4 +89,3 @@ The core logic is implemented in C, utilizing Pebble's SDK. Key components inclu
 ## Contributing
 
 Contributions are welcome! If you have suggestions for improvement or new features, let me know!
-
