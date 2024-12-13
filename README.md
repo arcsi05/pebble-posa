@@ -33,6 +33,21 @@ This application is designed for the Pebble smartwatch to assist individuals wit
 
 ---
 
+## Screenshots
+
+**Launching the app, waiting for monitoring to start**
+
+![Screen showing initial welcome message: Get ready to sleep! Monitoring in 20 minutes.](<img/Screenshot from 2024-12-13 16-13-51.png>)
+
+**Screen while monitoring is in-progress**
+
+
+![Screen showing numbers regards to warnings: 1 - 2 - 3 --- 20 - 17 - 11](<img/Screenshot from 2024-12-13 16-16-04.png>)
+
+The top numbers represent the three levels of warnings, the bottom numbers show how many time each warning was triggered.
+
+---
+
 ## Build and Install
 
 > There are plans to submit the application to the [Rebble Store for Pebble](http://store-beta.rebble.io/apps), but this will only happen when additional features are added and stable.
